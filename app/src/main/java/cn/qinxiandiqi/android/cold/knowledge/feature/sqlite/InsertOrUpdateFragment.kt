@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import cn.qinxiandiqi.android.cold.knowledge.R
 import cn.qinxiandiqi.android.cold.knowledge.databinding.FeatureSqliteFragmentInsertOrUpdateBinding
+import kotlinx.coroutines.flow.onEach
 
 /**
  * SQLite插入或更新部分字段
@@ -32,14 +33,25 @@ class InsertOrUpdateFragment : Fragment() {
 
         _binding = FeatureSqliteFragmentInsertOrUpdateBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _binding?.apply {
+            btnCreateDb.setOnClickListener {
+                viewModel.createDB()
+            }
+            btnDropDb.setOnClickListener {
+                viewModel.dropDB()
+            }
+            btnInsertOrUpdate.setOnClickListener {
 
-        binding.buttonSecond.setOnClickListener {
-            findNavController().navigate(R.id.action_InsertOrUpdateFragment_to_RouterFragment)
+            }
+
+            viewModel.logStateFlow
+                .onEach {
+                    tvLog.text = it
+                }
         }
     }
 
